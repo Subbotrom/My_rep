@@ -10,12 +10,12 @@ void rand(int (*arr)){
 	unsigned seed = 1050;
 	std :: default_random_engine rng(seed); 
 	std :: uniform_int_distribution<unsigned> dstr (0, 100000);
-	for (unsigned counter = N; counter != -1; --counter){
+	for (unsigned counter = N-1; counter != -1; --counter){
 			arr[counter] = dstr(rng);
 	}
 }
 
-int search(int arr[1000000], int len, int n){
+int search(int arr[], int len, int n){
 	for(int i = 0; i < len; ++i){
 		if(arr[i] == n){
 			return 0;
@@ -137,33 +137,14 @@ void my_qsort(int arr[N], int (*ref), int l, int r)
 
 int main(){
 	int *m = new int[N];
-	int s;
+	int s, n = 0;
 	//for(int i = 0; i < 200; i++){
 		//std::cout << m[i] << std::endl;
 	//}
-	for (unsigned len = 100; len !=N+100; len+=100){
+	for (unsigned len = 100; len < N+100; len=len + len/40){
 		rand(m);
 		std::default_random_engine generator;
 		std::uniform_int_distribution<int> distribution(0,100000);
-		if(len%5000==0){
-			s = 1;
-		}
-		else{
-			if (len%3000==0){
-				s = 2;
-				}
-				else{
-					if (len%7000==0){
-						s = 3;
-					}
-					else{
-						s = distribution(generator);
-					}
-					
-				}
-			
-		}
-		
 		auto begin = std :: chrono :: steady_clock ::now();
 		//for (int i = 0; i < 300; i++){
 		//search(m, len, distribution(generator));
@@ -172,11 +153,19 @@ int main(){
 		//auto time_span = std :: chrono :: duration_cast<std :: chrono :: milliseconds >(end - begin );
 		//std :: cout << time_span.count() << std :: endl ;
 		int nuls[N] = {0};
-		for (int i = 0; i < 50; i++){
+		for (int i = 0; i < 100; i++){
+			if(n%101 == 0){
+				s = 5;
+			}
+			else{
+				s = distribution(generator);
+			}
+			++n;
 			search_c(m, m, nuls, len, s);
 		}
 		auto end = std :: chrono :: steady_clock ::now(); 
 		auto time_span = std :: chrono :: duration_cast<std :: chrono :: milliseconds >(end - begin );
+		std :: cout << len << std :: endl;
 		std :: cout << time_span.count() << std :: endl ;
 	}
 	delete []m;
