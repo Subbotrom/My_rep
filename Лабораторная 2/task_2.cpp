@@ -4,11 +4,11 @@
 
 #define N 50000
 
-void rand(int (*arr)){
+void rand(int (*arr), unsigned size){
 	unsigned seed = 1050;
 	std :: default_random_engine rng(seed); 
 	std :: uniform_int_distribution<unsigned> dstr (0, 100000);
-	for (unsigned counter = N-1; counter != -1; --counter){
+	for (unsigned counter = size-1; counter != -1; --counter){
 			arr[counter] = dstr(rng);
 	}
 }
@@ -30,7 +30,7 @@ void comb_sort(int arr [], unsigned const end_idx, int& counter){
     int flag = 0;
     while(step > 1){
         forward_step(arr, end_idx, step, flag, counter);
-        step /= 2;
+        step *= 0.8;
     }
     flag = 1;
     while (flag)
@@ -57,7 +57,7 @@ int main(){
     int c;
     for (unsigned len = 1000; len < N; len=len + len/40){
         c = 0;
-        rand(a);
+        rand(a, len);
         auto begin = std :: chrono :: steady_clock ::now();
         comb_sort(a, len-1, c);
         auto end = std :: chrono :: steady_clock ::now();
