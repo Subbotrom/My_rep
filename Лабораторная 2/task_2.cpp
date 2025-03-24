@@ -69,6 +69,7 @@ int main(){
         std::cout << c << std::endl;
         std::cout << len*(len-1)/2 << std::endl;
         std :: cout << time_span.count() << std :: endl;
+        rand(a, len);
         begin = std :: chrono :: steady_clock ::now();
         buble(a, len);
         end = std :: chrono :: steady_clock ::now();
